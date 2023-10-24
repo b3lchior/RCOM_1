@@ -4,7 +4,7 @@
 
 // MISC
 #define _POSIX_SOURCE 1 // POSIX compliant source
-
+#define BAUDRATE 38400  
 int timeout = 0;
 int nRetransmissions = 0;
 int alarmTriggered = FALSE;
@@ -31,7 +31,7 @@ int llopen(LinkLayer connectionParameters){
     // setting the new serial port settings
 
     bzero(&newtio, sizeof(newtio)); // clears the newtio struct by filling it with zeros
-    newtio.c_cflag = connectionParameters.baudRate | CS8 | CLOCAL | CREAD; 
+    newtio.c_cflag =  BAUDRATE | CS8 | CLOCAL | CREAD; 
     newtio.c_iflag = IGNPAR;
     newtio.c_oflag = 0;
     newtio.c_lflag = 0;
