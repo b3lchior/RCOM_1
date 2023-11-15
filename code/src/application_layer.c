@@ -180,10 +180,12 @@ void applicationLayer(const char *serialPort, const char *role, int baudRate,
             }
 
             fclose(newFile);
+            llclose(fd);
             break;
 
         default:
             exit(-1);
             break;
-    }}
+        }
+    }
 }
