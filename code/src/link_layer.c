@@ -331,14 +331,13 @@ int llread(unsigned char *packet)
                             state = 6;
                             sendFrame(A, C_RR(tramaRx));
                             tramaRx = (tramaRx + 1)%2;
-                            return i; 
+                            return i;
                         }
                         else{
                             printf("Error: retransmition\n");
                             sendFrame(A, C_REJ(tramaRx));
-                            return -1;
+                            state = 0;
                         };
-
                     }
                     else{
                         packet[i++] = byte;
