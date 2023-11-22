@@ -42,7 +42,7 @@ unsigned char* getControlPacket(const unsigned int c, const char* filename, long
 
     const int L1 = (int) log2feup((float)length)/8.0;
     const int L2 = strlen(filename);
-    *size = 1+2+L1+2+L2;
+    *size = 5+L1+L2;
     unsigned char *packet = (unsigned char*)malloc(*size);
     
     unsigned int pos = 0;
@@ -63,7 +63,7 @@ unsigned char* getControlPacket(const unsigned int c, const char* filename, long
 
 unsigned char * getDataPacket(unsigned char sequence, unsigned char *data, int dataSize, int *packetSize){
 
-    *packetSize = 1 + 1 + 2 + dataSize;
+    *packetSize = 4+dataSize;
     unsigned char* packet = (unsigned char*)malloc(*packetSize);
 
     packet[0] = 1;   
@@ -163,7 +163,7 @@ void applicationLayer(const char *serialPort, const char *role, int baudRate,
             unsigned long int rxFileSize = 0;
             unsigned char* name = parseControlPacket(packet, packetSize, &rxFileSize); 
 
-            FILE* newFile = fopen((char *) "penguin-received.gif", "wb+");
+            FILE* newFile = fopen((char *) "penguin_received.gif", "wb+");
 
             while (1) {    
                 while ((packetSize = llread(packet)) < 0);

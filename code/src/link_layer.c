@@ -215,6 +215,9 @@ int llopen(LinkLayer connectionParameters) {
 int llwrite(const unsigned char* buf, int bufSize) {
 
     printf("Testing LLWRITE.\n");
+
+    (void) signal(SIGALRM, alarmHandler);
+
     
     int frameSize = 6+bufSize;
     unsigned char *frame = (unsigned char *) malloc(frameSize);
@@ -248,10 +251,11 @@ int llwrite(const unsigned char* buf, int bufSize) {
         alarm(timeout);
         rejected = 0;
         accepted = 0;
+        write(fd, frame, frameSize);
 
         while (alarmEnabled == TRUE && !rejected && !accepted) {
+            if (alarmEnabled == FALSE) break;
 
-            write(fd, frame, j);
             unsigned char result = readControlFrame(fd);
             
             if(!result){
@@ -333,11 +337,14 @@ int llread(unsigned char *packet)
                             tramaRx = (tramaRx + 1)%2;
                             return i;
                         }
+
                         else{
                             printf("Error: retransmition\n");
                             sendFrame(A, C_REJ(tramaRx));
                             state = 0;
+                            i = 0;
                         };
+
                     }
                     else{
                         packet[i++] = byte;
